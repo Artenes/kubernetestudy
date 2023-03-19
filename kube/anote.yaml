@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: anote
+spec:
+  replicas: 4
+
+  selector:
+    matchLabels:
+      app: anote
+
+  template:
+    metadata:
+      labels:
+        app: anote
+    spec:
+      containers:
+        - name: app
+          image: artenesnogueira/anotes:2.0.1
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: IfNotPresent
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: anote
+spec:
+  selector:
+    app: anote
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: LoadBalancer
